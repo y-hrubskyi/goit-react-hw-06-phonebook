@@ -1,10 +1,7 @@
 const LS_KEY = 'contacts';
 
 export const getContactsFromLS = () => {
-  const contacts = JSON.parse(localStorage.getItem(LS_KEY));
-  if (contacts) {
-    return contacts;
-  }
+  return JSON.parse(localStorage.getItem(LS_KEY)) ?? [];
 };
 
 export const setContactsToLS = contacts => {
