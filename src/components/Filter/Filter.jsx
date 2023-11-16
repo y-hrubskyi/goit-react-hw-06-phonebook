@@ -1,8 +1,14 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { getFilter, updateFilter } from 'redux/filterSlice';
+
 import { Input } from './Filter.styled';
 
-export const Filter = ({ filter, filterInfo, onChange }) => {
+export const Filter = () => {
+  const dispatch = useDispatch();
+  const filter = useSelector(getFilter);
+
   const handleChange = e => {
-    onChange(e.target.value);
+    dispatch(updateFilter(e.target.value));
   };
 
   return (
@@ -16,7 +22,6 @@ export const Filter = ({ filter, filterInfo, onChange }) => {
         onChange={handleChange}
         required
       />
-      {filterInfo}
     </>
   );
 };

@@ -1,10 +1,11 @@
+import { Form as FormikForm, Field as FormikField } from 'formik';
 import styled from 'styled-components';
 
 export const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-export const Form = styled.form`
+export const Form = styled(FormikForm)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -13,15 +14,16 @@ export const Form = styled.form`
   border: 1px solid black;
   border-radius: 8px;
 `;
-export const Label = styled.label`
+export const FormGroup = styled.label`
   margin-bottom: 8px;
 `;
 
-export const Input = styled.input`
+export const Field = styled(FormikField)`
   margin-bottom: 16px;
   border-radius: 4px;
   outline-color: blue;
 `;
+
 export const Button = styled.button`
   padding: 4px 12px;
   border-radius: 8px;

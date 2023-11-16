@@ -1,62 +1,51 @@
-import { useState } from 'react';
-import { Button, Form, Input, Label } from './ContactForm.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { Formik } from 'formik';
+import { nanoid } from 'nanoid';
 
-export const ContactForm = ({ onAddContact }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+import { Button, Form, FormGroup, Field } from './ContactForm.styled';
+import { addContact, getContacts } from 'redux/contactsSlice';
 
-  const handleChange = e => {
-    const { name, value } = e.target;
+export const ContactForm = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
 
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        throw new Error('Unsupported form field');
+  const onAddContact = data => {
+    const formattedName = data.name.toLowerCase();
+    const isAlreadyAdded = contacts.some(
+      ({ name }) => name.toLowerCase() === formattedName
+    );
+
+    if (isAlreadyAdded) {
+      alert(`${data.name} is already in contacts.`);
+      return isAlreadyAdded;
+    }
+
+    const newContact = { ...data, id: nanoid() };
+    dispatch(addContact(newContact));
+  };
+
+  const handleSubmit = (values, actions) => {
+    const isAlreadyAdded = onAddContact(values);
+    if (!isAlreadyAdded) {
+      actions.resetForm();
     }
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    const isAlreadyAdded = onAddContact({ name, number });
-    if (!isAlreadyAdded) reset();
-  };
-
-  const reset = () => {
-    setName('');
-    setNumber('');
-  };
-
   return (
-    <>
-      <Form onSubmit={handleSubmit}>
-        <Label htmlFor="name">Name</Label>
-        <Input
-          type="text"
-          id="name"
-          name="name"
-          value={name}
-          onChange={handleChange}
-          required
-        />
+    <Formik initialValues={{ name: '', number: '' }} onSubmit={handleSubmit}>
+      <Form>
+        <FormGroup>
+          Name
+          <Field type="text" name="name" required />
+        </FormGroup>
 
-        <Label htmlFor="number">Number</Label>
-        <Input
-          type="tel"
-          id="number"
-          name="number"
-          value={number}
-          onChange={handleChange}
-          required
-        />
+        <FormGroup>
+          Number
+          <Field type="tel" name="number" required />
+        </FormGroup>
 
         <Button type="submit">Add contact</Button>
       </Form>
-    </>
+    </Formik>
   );
 };
