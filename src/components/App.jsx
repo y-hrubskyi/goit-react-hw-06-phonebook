@@ -1,27 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
 
 import { ContactForm } from './ContactForm/ContactForm';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
-import { getContactsFromLS, setContactsToLS } from 'services/localStorage';
 
 import { GlobalStyle } from './GlobalStyle';
 import { AppWrapper } from './App.styled';
 
-export const App = () => {
-  const [filter, setFilter] = useState('');
-  const [contacts, setContacts] = useState(getContactsFromLS);
+import { addContact, deleteContact, getContacts } from 'redux/contactsSlice';
+import { getFilter, setFilter } from 'redux/filterSlice';
 
-  useEffect(() => {
-    setContactsToLS(contacts);
-  }, [contacts]);
+export const App = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
 
   const updateFilter = value => {
-    setFilter(value);
+    dispatch(setFilter(value));
   };
 
-  const addContact = data => {
+  const onAddContact = data => {
     const formattedName = data.name.toLowerCase();
     const isAlreadyAdded = contacts.some(
       ({ name }) => name.toLowerCase() === formattedName
@@ -33,11 +32,11 @@ export const App = () => {
     }
 
     const newContact = { ...data, id: nanoid() };
-    setContacts(prevState => [...prevState, newContact]);
+    dispatch(addContact(newContact));
   };
 
-  const deleteContact = id => {
-    setContacts(prevState => prevState.filter(contact => contact.id !== id));
+  const onDeleteContact = id => {
+    dispatch(deleteContact(id));
   };
 
   const filterContacts = () => {
@@ -60,11 +59,14 @@ export const App = () => {
       <GlobalStyle />
 
       <h1>Phonebook</h1>
-      <ContactForm onSubmit={addContact} />
+      <ContactForm onAddContact={onAddContact} />
 
       <h2>Contacts</h2>
       <Filter filter={filter} filterInfo={filterInfo} onChange={updateFilter} />
-      <ContactList contacts={filteredContacts} onClick={deleteContact} />
+      <ContactList
+        contacts={filteredContacts}
+        onDeleteContact={onDeleteContact}
+      />
     </AppWrapper>
   );
 };

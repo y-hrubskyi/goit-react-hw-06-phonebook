@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button, Form, Input, Label } from './ContactForm.styled';
 
-export const ContactForm = ({ onSubmit }) => {
+export const ContactForm = ({ onAddContact }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -23,7 +23,7 @@ export const ContactForm = ({ onSubmit }) => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    const isAlreadyAdded = onSubmit({ name, number });
+    const isAlreadyAdded = onAddContact({ name, number });
     if (!isAlreadyAdded) reset();
   };
 
