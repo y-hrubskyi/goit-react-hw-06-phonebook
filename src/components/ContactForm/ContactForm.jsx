@@ -1,48 +1,61 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
+import toast from 'react-hot-toast';
 
-import { Button, Form, FormGroup, Field } from './ContactForm.styled';
 import { addContact, getContacts } from 'redux/contactsSlice';
+import { isInContacts } from 'helpers/isInContacts';
+
+import { Form, Label, Field, Button, ErrorMessage } from './ContactForm.styled';
+
+const contactsSchema = Yup.object().shape({
+  name: Yup.string().min(2, 'Too Short').required('Required'),
+  number: Yup.string().min(7, 'Must be 7 or more').required('Required'),
+});
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
 
-  const onAddContact = data => {
-    const formattedName = data.name.toLowerCase();
-    const isAlreadyAdded = contacts.some(
-      ({ name }) => name.toLowerCase() === formattedName
-    );
+  const addContactFoo = contact => {
+    const isExist = isInContacts(contacts, contact.name);
 
-    if (isAlreadyAdded) {
-      alert(`${data.name} is already in contacts.`);
-      return isAlreadyAdded;
+    if (isExist) {
+      alert(`${contact.name} is already in contacts.`);
+      return isExist;
     }
 
-    const newContact = { ...data, id: nanoid() };
+    const newContact = { ...contact, id: nanoid() };
     dispatch(addContact(newContact));
+    toast.success('Contact successfully added');
   };
 
   const handleSubmit = (values, actions) => {
-    const isAlreadyAdded = onAddContact(values);
+    const isAlreadyAdded = addContactFoo(values);
     if (!isAlreadyAdded) {
       actions.resetForm();
     }
   };
 
   return (
-    <Formik initialValues={{ name: '', number: '' }} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={{ name: '', number: '' }}
+      onSubmit={handleSubmit}
+      validationSchema={contactsSchema}
+    >
       <Form>
-        <FormGroup>
+        <Label>
           Name
-          <Field type="text" name="name" required />
-        </FormGroup>
+          <Field type="text" name="name" />
+          <ErrorMessage name="name" component="span" />
+        </Label>
 
-        <FormGroup>
+        <Label>
           Number
-          <Field type="tel" name="number" required />
-        </FormGroup>
+          <Field type="tel" name="number" />
+          <ErrorMessage name="number" component="span" />
+        </Label>
 
         <Button type="submit">Add contact</Button>
       </Form>

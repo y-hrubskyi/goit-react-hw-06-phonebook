@@ -1,19 +1,22 @@
-import { ContactForm } from 'components/ContactForm/ContactForm';
-import { Filter } from 'components/Filter/Filter';
-import { ContactList } from 'components/ContactList/ContactList';
+import { Toaster } from 'react-hot-toast';
+
+import { ContactForm } from 'components/ContactForm';
+import { Filter } from 'components/Filter';
+import { ContactList } from 'components/ContactList';
 
 import { GlobalStyle } from 'components/GlobalStyle';
-import { AppWrapper } from 'components/App.styled';
+import { AppWrapper, PageTitle, Title } from 'components/App.styled';
 
 export const App = () => {
   return (
     <AppWrapper>
       <GlobalStyle />
+      <Toaster toastOptions={{ duration: 1500 }} />
 
-      <h1>Phonebook</h1>
+      <PageTitle>Phonebook</PageTitle>
       <ContactForm />
 
-      <h2>Contacts</h2>
+      <Title>Contacts</Title>
       <Filter />
       <ContactList />
     </AppWrapper>
