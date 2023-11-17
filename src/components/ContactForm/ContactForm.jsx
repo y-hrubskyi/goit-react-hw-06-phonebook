@@ -22,7 +22,7 @@ export const ContactForm = () => {
     const isExist = isInContacts(contacts, contact.name);
 
     if (isExist) {
-      alert(`${contact.name} is already in contacts.`);
+      toast.error(`${contact.name} is already in contacts.`);
       return isExist;
     }
 
