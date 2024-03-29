@@ -1,11 +1,11 @@
 import { Toaster } from 'react-hot-toast';
 
-import { ContactForm } from 'components/ContactForm';
-import { Filter } from 'components/Filter';
-import { ContactList } from 'components/ContactList';
+import { ContactForm } from './ContactForm/ContactForm';
+import { Filter } from './Filter/Filter';
+import { ContactList } from './ContactList/ContactList';
 
-import { GlobalStyle } from 'components/GlobalStyle';
-import { AppWrapper, PageTitle, Title } from 'components/App.styled';
+import { GlobalStyle } from './GlobalStyle';
+import { AppWrapper, PageTitle, Title } from './App.styled';
 
 export const App = () => {
   return (
