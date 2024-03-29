@@ -18,16 +18,19 @@ export const ContactList = () => {
   };
 
   const filteredContacts = filterContacts(contacts, filter);
-  const contactList = filteredContacts.map(contact => (
-    <li key={contact.id}>
-      <ContactData>
-        {contact.name}: {contact.number}
-      </ContactData>
-      <Button type="button" onClick={() => deleteContactFoo(contact.id)}>
-        Delete
-      </Button>
-    </li>
-  ));
 
-  return <ContactsList>{contactList}</ContactsList>;
+  return (
+    <ContactsList>
+      {filteredContacts.map(contact => (
+        <li key={contact.id}>
+          <ContactData>
+            {contact.name}: {contact.number}
+          </ContactData>
+          <Button type="button" onClick={() => deleteContactFoo(contact.id)}>
+            Delete
+          </Button>
+        </li>
+      ))}
+    </ContactsList>
+  );
 };
