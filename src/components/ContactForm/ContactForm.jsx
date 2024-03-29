@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
 
 import { addContact, getContacts } from 'redux/contactsSlice';
@@ -18,15 +17,14 @@ export const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
 
-  const addContactFoo = contact => {
-    const isExist = isInContacts(contacts, contact.name);
+  const addContactFoo = newContact => {
+    const isExist = isInContacts(contacts, newContact.name);
 
     if (isExist) {
-      toast.error(`${contact.name} is already in contacts.`);
+      toast.error(`${newContact.name} is already in contacts.`);
       return isExist;
     }
 
-    const newContact = { ...contact, id: nanoid() };
     dispatch(addContact(newContact));
     toast.success('Contact successfully added');
   };
