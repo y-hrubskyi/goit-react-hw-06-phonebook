@@ -4,7 +4,7 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
 
-import { GlobalStyle } from './GlobalStyle';
+import { GlobalStyle } from '../styles/GlobalStyle';
 import { AppWrapper, PageTitle, Title } from './App.styled';
 
 export const App = () => {
