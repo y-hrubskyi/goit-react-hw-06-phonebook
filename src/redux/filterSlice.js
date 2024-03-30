@@ -15,4 +15,4 @@ export const { updateFilter } = filterSlice.actions;
 export const filterReducer = filterSlice.reducer;
 
 // Selectors
-export const getFilter = state => state.filter;
+export const selectFilter = state => state.filter;

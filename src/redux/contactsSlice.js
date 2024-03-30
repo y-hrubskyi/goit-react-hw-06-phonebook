@@ -29,4 +29,4 @@ export const { addContact, deleteContact } = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;
 
 // Selectors
-export const getContacts = state => state.contacts;
+export const selectContacts = state => state.contacts;
