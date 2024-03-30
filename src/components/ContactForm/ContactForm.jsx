@@ -1,10 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import toast from 'react-hot-toast';
-
-import { addContact, getContacts } from 'redux/contactsSlice';
-import { isInContacts } from 'helpers/isInContacts';
 
 import { Form, Label, Field, Button, ErrorMessage } from './ContactForm.styled';
 
@@ -13,33 +8,15 @@ const contactsSchema = Yup.object().shape({
   number: Yup.string().min(7, 'Must be 7 or more').required('Required'),
 });
 
-export const ContactForm = () => {
-  const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
-
-  const addContactFoo = newContact => {
-    const isExist = isInContacts(contacts, newContact.name);
-
-    if (isExist) {
-      toast.error(`${newContact.name} is already in contacts.`);
-      return isExist;
-    }
-
-    dispatch(addContact(newContact));
-    toast.success('Contact successfully added');
-  };
-
-  const handleSubmit = (values, actions) => {
-    const isAlreadyAdded = addContactFoo(values);
-    if (!isAlreadyAdded) {
-      actions.resetForm();
-    }
-  };
-
+export const ContactForm = ({
+  contact: { name, number },
+  onSubmit,
+  action,
+}) => {
   return (
     <Formik
-      initialValues={{ name: '', number: '' }}
-      onSubmit={handleSubmit}
+      initialValues={{ name, number }}
+      onSubmit={onSubmit}
       validationSchema={contactsSchema}
     >
       <Form>
@@ -55,7 +32,7 @@ export const ContactForm = () => {
           <ErrorMessage name="number" component="span" />
         </Label>
 
-        <Button type="submit">Add contact</Button>
+        <Button type="submit">{action}</Button>
       </Form>
     </Formik>
   );
