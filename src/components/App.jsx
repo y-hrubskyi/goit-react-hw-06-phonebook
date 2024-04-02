@@ -9,7 +9,7 @@ import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
 import { AddContact } from './AddContact/AddContact';
 
-import { GlobalStyle } from '../styles/GlobalStyle';
+import { GlobalStyle } from 'styles/GlobalStyle';
 import { Layout, PageTitle, Title } from './App.styled';
 
 export const App = () => {
@@ -19,9 +19,9 @@ export const App = () => {
   const filteredContacts = filterContacts(contacts, filter);
   const results = filteredContacts.length;
 
-  let filterInfo = '';
-  if (!results && !filter) filterInfo = <p>Your contact list is empty</p>;
-  if (!results && filter) filterInfo = <p>Not Finded</p>;
+  let filterResult = '';
+  if (!results && !filter) filterResult = 'Your contact list is empty';
+  if (!results && filter) filterResult = 'Not contacts found';
 
   return (
     <Layout>
@@ -34,7 +34,7 @@ export const App = () => {
       {filteredContacts.length ? (
         <ContactList contacts={filteredContacts} />
       ) : (
-        filterInfo
+        <p>{filterResult}</p>
       )}
       <AddContact />
     </Layout>

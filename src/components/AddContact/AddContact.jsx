@@ -44,13 +44,15 @@ export const AddContact = () => {
       <Button type="button" onClick={toggleModal}>
         ➕ Add new contact
       </Button>
-      <ModalBase isOpen={modalIsOpen} onClose={toggleModal}>
-        <ContactForm
-          contact={{ name: '', number: '' }}
-          action="Add contact"
-          onSubmit={handleSubmit}
-        />
-      </ModalBase>
+      {modalIsOpen && (
+        <ModalBase isOpen={modalIsOpen} onClose={toggleModal}>
+          <ContactForm
+            contact={{ name: '', number: '' }}
+            action="Add contact"
+            onSubmit={handleSubmit}
+          />
+        </ModalBase>
+      )}
     </Wrapper>
   );
 };
